@@ -78,7 +78,7 @@ int main(void)
   cl_program program = clCreateProgramWithSource(context, 1, (const char**)&programSource, NULL, &status);
 
   //Build/compile the program for the device
-  status = clBuildProgram(program, 1, device[0], NULL, NULL, NULL);
+  status = clBuildProgram(program, 1, device, NULL, NULL, NULL);
 
   //create the vector addition kernel
   cl_kernel kernel = clCreateKernel(program, "vecadd", &status);
@@ -116,8 +116,8 @@ int main(void)
   free(B);
   free(C);
 
-  return 0;
+  //return 0;
 
 
-	//getchar();
+	getchar();
 }
