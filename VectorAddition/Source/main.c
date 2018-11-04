@@ -5,9 +5,9 @@
 
 //OpenCL kernel to perform an element-wise addition
 const char* programSource =
-"--kernel \n"
-"void vecadd(__global int *A          \n"
-"            __global int *B          \n"
+"__kernel \n"
+"void vecadd(__global int *A,          \n"
+"            __global int *B,          \n"
 "            __global int *C)          \n"
 "{                                             \n"
 "                                              \n"
@@ -33,7 +33,7 @@ int main(void)
   for ( i = 0; i < elements; i++ )
   {
     A[i] = i;
-    B[i] = i;
+    B[i] = 1024 - i;
   }
 
 	cl_int status;
@@ -111,6 +111,10 @@ int main(void)
   clReleaseMemObject(bufC);
   clReleaseContext(context);
 
+  for (i = 0; i < elements; i++)
+  {
+    printf("%d + %d = %d\n", A[i], B[i], C[i]);
+  }
   //Free host resources
   free(A);
   free(B);
