@@ -30,5 +30,5 @@ void rotation(
   float value;
   value = read_imagef(inputImage, sampler, readCoord).x;
 
-  write_imagef(outputImage, (int2)(x, y), float4(value, 0.f, 0.f, 0.f));
+  write_imagef(outputImage, (int2)(x, y), (float4)(value, 0.f, 0.f, 0.f));
 }
