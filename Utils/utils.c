@@ -46,7 +46,7 @@ char* readFile(const char *filename) {
    long fileSize;
    
    /* Open the file */
-   fp = fopen(filename, "r");
+   fp = fopen(filename, "rb");
    if (!fp) {
       printf("Could not open file: %s\n", filename);
       exit(-1);

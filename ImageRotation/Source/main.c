@@ -4,8 +4,8 @@
 
 #include <CL/cl.h>
 
-#include "utils/utils.h"
-#include "utils/bmp-utils.h"
+#include "../../utils/utils.h"
+#include "../../utils/bmp-utils.h"
 
 int main(int argc, char **argv)
 {
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
   check(status);
 
   cl_device_id device;
-  status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
+  status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
   check(status);
 
   cl_context context;
