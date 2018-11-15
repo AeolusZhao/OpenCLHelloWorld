@@ -17,6 +17,7 @@ int main(int argc, char **argv)
   int imageRows;
   int imageCols;
   hInputImage = readBmpFloat("test.bmp", &imageRows, &imageCols);
+
   const int imageElements = imageRows * imageCols;
   const size_t imageSize = imageElements * sizeof(float);
 
@@ -24,13 +25,25 @@ int main(int argc, char **argv)
   if (!hOutputImage) { exit(-1); }
 
   cl_int status;
-  cl_platform_id platform;
-  status = clGetPlatformIDs(1, &platform, NULL);
+  cl_platform_id* platform;
+  cl_int NumOfPlatforms;
+  status = clGetPlatformIDs(0, NULL, &NumOfPlatforms);
+  platform = (cl_platform_id*)malloc(sizeof(cl_platform_id) * NumOfPlatforms);
+
+  status = clGetPlatformIDs(NumOfPlatforms, platform, NULL);
   check(status);
 
   cl_device_id device;
-  status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+  status = clGetDeviceIDs(platform[1], CL_DEVICE_TYPE_GPU, 1, &device, NULL);
   check(status);
+
+  cl_char vendor_name[1024] = { 0 };
+  cl_char device_name[1024] = { 0 };
+  size_t returned_size = 0;
+
+  status = clGetDeviceInfo(device, CL_DEVICE_VENDOR, sizeof(vendor_name), vendor_name, &returned_size);
+  status = clGetDeviceInfo(device, CL_DEVICE_NAME, sizeof(device_name), device_name, &returned_size);
+  printf("Connect to %s, %s\n", vendor_name, device_name);
 
   cl_context context;
   context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
@@ -71,8 +84,8 @@ int main(int argc, char **argv)
   status = clBuildProgram(program, 1, &device, NULL, NULL, NULL);
   if (status != CL_SUCCESS)
   {
-    printCompilerError(program, device);
-    exit(-1);
+	  printCompilerError(program, device);
+	  exit(-1);
   }
 
   cl_kernel kernel;
